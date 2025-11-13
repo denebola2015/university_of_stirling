@@ -1,9 +1,8 @@
 import pygame
 from pygame.locals import *
-from Game.constants import WIDTH, HEIGHT
+from Game.constants import WIDTH, HEIGHT, FPS, RED, YELLOW
 from Game.board import Board
 
-FPS = 120
 
 def main():
     pygame.init()
