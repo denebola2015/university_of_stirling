@@ -12,3 +12,8 @@ class Piece:
     def draw(self, win, x, y):
         """Draws the piece on the window."""
         pygame.draw.circle(win, self.color, (x, y), TOKEN_RADIUS)
+        
+class RedPiece(Piece):
+    pass
+class YellowPiece(Piece):
+    pass
