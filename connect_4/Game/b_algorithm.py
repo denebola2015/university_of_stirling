@@ -1,14 +1,16 @@
-"""This module contains tracking matrices intended for use in dynamically tracking the gameplay as well as tracking each player's scorecard. 
-It is an implementation intended to facilitate the development of AI algorithms for Connect 4."""
+"""
+This module contains tracking matrices intended for use in dynamically tracking the gameplay as well as tracking each player's scorecard. 
+It is an implementation intended to facilitate the incorporation of Agentic AI algorithms for Connect 4.
+"""
 import numpy as np
 from .constants import ROWS, COLS
 from typing import Tuple
-# Define constants for gameplay matrix values to avoid "magic numbers"
+# Define constants for gameplay matrix values"
 PLAYER_RED = 1
 PLAYER_YELLOW = 2
 
 
-
+# create_tracking_matrices function returns three separate NumPy arrays (the tracking matrices) grouped together in a single tuple.
 def create_tracking_matrices() -> Tuple[np.ndarray, np.ndarray, np.ndarray]:
     """
     Creates and returns three tracking matrices:
