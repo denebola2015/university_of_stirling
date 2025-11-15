@@ -6,14 +6,25 @@ The gameplay_matrix is a numpy array representing the Connect 4 board.
 import os
 from openai import OpenAI
 import numpy as np
-
-def get_ai_move(gameplay_matrix: np.ndarray) -> int: # Returns: An integer representing the column (0-6) the AI wants to play in.
-   
+# --- Module-level client initialization ---
+# Initialize the client once when the module is imported for efficiency.
+# This also helps in failing early if the API key is not set.
+try:
+    # Check for DeepSeek specific key first, then fall back to the general OpenAI key name.
+    API_KEY = os.environ.get('DEEPSEEK_API_KEY') or os.environ.get('OPENAI_API_KEY')
+    if not API_KEY:
+        print("Warning: DEEPSEEK_API_KEY or OPENAI_API_KEY environment variable not found. AI will not function.")
+        client = None
+    else:
+        client = OpenAI(api_key=API_KEY, base_url="https://api.deepseek.com")
+except Exception as e:
+    print(f"Error initializing OpenAI client: {e}")
+    client = None
+def get_ai_move(gameplay_matrix: np.ndarray) -> int:
+    """Gets a move from the AI. Returns an integer for the column (0-6) or -1 on error."""
+    if client is None:
+        return -1 # Return error if client wasn't initialized
     try:
-        # The client automatically reads the API key from the OPENAI_API_KEY environment variable.
-        client = OpenAI(api_key=os.environ.get('DEEPSEEK_API_KEY'), base_url="https://api.deepseek.com")
-
-
         # Convert the numpy matrix to a simple string format for the prompt.
         board_string = "\n".join([" ".join(map(str, row)) for row in gameplay_matrix])
 
@@ -35,16 +46,6 @@ def get_ai_move(gameplay_matrix: np.ndarray) -> int: # Returns: An integer repre
             ],
             stream=False
         )
-
-        """chat_completion = client.chat.completions.create(
-            messages=[
-                {"role": "system", "content": "You are a Connect 4 expert that only responds with a single number."},
-                {"role": "user", "content": prompt},
-            ],
-            model="gpt-4o",
-            max_tokens=5, # A small number is sufficient for a single-digit response.
-        )"""
-        
         response_content = response.choices[0].message.content
         
         # Convert the response to an integer.
