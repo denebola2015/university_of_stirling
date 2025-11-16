@@ -1,5 +1,7 @@
 """ This module provides a function to get the AI's suggested move in the Connect 4 game. It Sends the current 'gameplay' matrix 
-to OpenAI's GPT model through the "deepseek" API and returns the AI's suggested move. The OpenAI client automatically uses the 'DEEPSEEK_API_KEY' environment variable.
+to both OpenAI's GPT model and DeepSeek's API and - depending on successful connection to anyone of these, returns the AI's suggested move. 
+Both the 'OPENAI_API_KEY' and 'DEEPSEEK_API_KEY' environment variable are set locally on my computer. Any porting of this code to another environment
+will require setting up an OpenAI API key or DeepSeek API key in the environment variables for the code to function correctly.
 The gameplay_matrix is a numpy array representing the Connect 4 board.
                          0 = empty, 1 = Red (player), 2 = Yellow (AI).
 """
