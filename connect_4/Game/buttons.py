@@ -2,8 +2,8 @@
 It also includes a function to draw the gameplay and scorecard matrices on the game window.
 """
 import pygame
-from Game.constants import BUTTON_WIDTH, BUTTON_HEIGHT, BUTTON_COLOR, BUTTON_HOVER_COLOR, BUTTON_TEXT_COLOR 
-from Game.board import Board 
+from .constants import BUTTON_WIDTH, BUTTON_HEIGHT, BUTTON_COLOR, BUTTON_HOVER_COLOR, BUTTON_TEXT_COLOR 
+from .board import Board 
 
 
 
@@ -14,7 +14,7 @@ class Button:
         self.is_hovered = False
     
     
-    def draw(self, win, font)
+    def draw(self, win, font):
      current_color = BUTTON_HOVER_COLOR if self.is_hovered else BUTTON_COLOR
      pygame.draw.rect(win, current_color, self.rect, border_radius=12)
      text_surface = font.render(self.text, True, BUTTON_TEXT_COLOR)
@@ -28,20 +28,20 @@ class Button:
     def is_clicked(self, event):
         return self.is_hovered and event.type == pygame.MOUSEBUTTONDOWN
     
-    
-    
-    def draw_matrix_info(win, board, font): 
-    #Draws the gameplay and scorecard matrices on the game_section and info section of the window respectively.
-        start_x = 610 
-        start_y = 20
-        line_height = 18
-        black = (0, 0, 0)
 
-        matrices = {
-        "Gameplay": board.gameplay,
-        "Red Scorecard": board.red_scorecard,
-        "Yellow Scorecard": board.yellow_scorecard
-    }
+
+def draw_matrix_info(win, board, font): 
+#Draws the gameplay and scorecard matrices on the game_section and info section of the window respectively.
+    start_x = 610 
+    start_y = 20
+    line_height = 18
+    black = (0, 0, 0)
+
+    matrices = {
+    "Gameplay": board.gameplay,
+    "Red Scorecard": board.red_scorecard,
+    "Yellow Scorecard": board.yellow_scorecard
+}
 
     y_offset = start_y # y_offset sets the starting vertical position for drawing text
     for title, matrix in matrices.items():
