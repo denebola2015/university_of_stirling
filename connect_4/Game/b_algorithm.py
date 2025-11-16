@@ -1,6 +1,9 @@
 """
 This module contains tracking matrices intended for use in dynamically tracking the gameplay as well as tracking each player's scorecard. 
-It is an implementation intended to facilitate the incorporation of Agentic AI algorithms for Connect 4.
+It is an implementation intended to facilitate the incorporation of Agentic AI algorithms for Connect 4. 
+The use of matrices allows for efficient representation and manipulation of the game state, which is essential for AI decision-making processes, 
+as well as permitting the use of matrix linear algebra operations for efficient computation. In this case using 4x4 identity matrices to 
+track sequences of diagonal and anti diagonal pieces.   
 """
 import numpy as np
 from .constants import ROWS, COLS
