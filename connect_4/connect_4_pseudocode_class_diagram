@@ -1,0 +1,110 @@
+PSEUDOCODE/CLASS DIAGRAMS FOR THE TWO IMPORTANT MODULES main.py and board.py
+
+Module main.py {
+        <<Module: main.py>>
+Function: main() {
+Instantiations:
+		pygame.display.set_mode
+		pygame.font.SysFont {
+				        font
+				  button_font
+				  winner_font
+    }
+clock
+reset_game
+buttons {
+		refresh
+		ai
+		quit
+}
+set turn = ‘Red’
+loop: while turn {
+      get mouse position
+      for item in buttons
+      if button_position same as mouse_position
+      button handlers { 
+				    set quit
+				    set refresh
+				    set AI
+			}
+			If not game_over and turn is ‘Red’ or ‘Yellow’ and not ai_opponent
+          get mouse position				
+          if mouse on game_board
+              divide game board by column_size value in constants.py
+              get mouse column position
+              call drop_piece on mouse column position
+              if drop_piece returns a row and column
+	                call check_win on returned row and column
+                  if check_win returns a player_id (1 or 2) {
+	                      output: turn “wins”
+	                      set game_over to true
+                  }
+      set turn to Yellow if Red else Red
+			if not game_over and turn is ‘Yellow” and ai_opponent	
+				  call get_ai_move
+				      if get_ai_move does not return -1
+					          call drop_piece using return from get¬_ai_move as its args
+					          if drop_piece returns,(row and column)
+						            call check_win with (row and column) args
+                        if check_win returns with id (1 or 2) {
+	                            output: turn “wins”
+	                            set game_over to true
+                        }
+						draw board on windows
+						for item in buttons
+							draw button on window
+						draw_matrix_info on info_section
+}
+}
+
+
+
+Module board.py {
+        <<Module: board.py>>
+class: Board {
+    			Constructor: __init__()
+        			Instantiations:
+           				 self.board (6x7 list of lists, initialized to None)
+           				 self.gameplay, self.red_scorecard, self.yellow_scorecard (from create_tracking_matrices())
+
+    			class method: drop_piece(column, piece_color) {
+        				loop: from bottom row to top row in the given column
+            					if slot at [row][column] is empty:
+                						Create a new Piece object at self.board[row][column]
+                					if piece_color argument is RED:
+                    					set gameplay[row][column] to 1
+                    					set red_scorecard[row][column] to 1
+                					else (piece_color is YELLOW):
+                    					set gameplay[row][column] to 2
+                    				set yellow_scorecard[row][column] to 1
+                					return the (row, column) of the new piece
+        					or return None (if column is full)
+			}
+    		 class method: check_win(row, column) {
+        				get player_id from gameplay[row][column]
+        				if player_id is 0 (empty), return None
+        
+        				select correct scorecard:
+            					If player_id is 1, use red_scorecard
+            					else, use yellow_scorecard
+        			}
+        	class method: call check_win_vectorized(scorecard, row, column) {
+        				if it returns True:
+            					return the winning player_id
+        					or return None (no winner)
+			}
+    			class method: draw_board(window) {
+        				draw game section rectangle (blue)
+        				draw info section rectangle (sky blue)
+        
+        				loop: for each row in board
+            				loop: for each column in board
+                					calculate center (x, y) for the slot
+                					if a piece exists at [row][column]:
+                    					call piece.draw()
+               					 else:
+                    					draw an empty slot (white circle)
+            }
+		}
+}
+
