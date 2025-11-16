@@ -1,4 +1,6 @@
-"""This module defines constants used in the Connect 4 game, including dimensions, colors, and frame rate. """
+"""
+This module defines constants used in the Connect 4 game, including dimensions, colors, and frame rate. 
+"""
 import pygame
  
 WIDTH, HEIGHT = 800, 700
@@ -14,9 +16,21 @@ FPS = 120
 CIRCLE_SIZE = (40, 40)
 # Size of each piece when drawn on the board
 
+# Button dimensions and positions
+BUTTON_WIDTH = 160
+BUTTON_HEIGHT = 50
+BUTTON_PADDING = 20
+BUTTON_X = 600 + (200 - BUTTON_WIDTH) // 2 # Center in info_section
+
+# Button Colors
+BUTTON_COLOR = (65,105,225) # Royal Blue
+BUTTON_HOVER_COLOR = (100,149,237) # Cornflower Blue
+BUTTON_TEXT_COLOR = (255, 255, 255)
+
+
 # RGB COLORS
 RED = (255, 0, 0)
 YELLOW = (255, 255, 0) 
 BLUE = (65,105,225)
-SKY_BLUE = (135,206,235)
+SKY_BLUE = (128,128,0)
 WHITE = (255, 255, 255)
