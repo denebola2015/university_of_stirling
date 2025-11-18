@@ -12,7 +12,7 @@ ROW_SIZE = (HEIGHT - 200) // ROWS
 #Row size, subtracts 200px to account for info section
 TOKEN_RADIUS = 20
 # The radius of each game piece
-FPS = 120
+FPS = 60
 CIRCLE_SIZE = (40, 40)
 # Size of each piece when drawn on the board
 
