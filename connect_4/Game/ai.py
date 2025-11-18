@@ -4,9 +4,11 @@ Both the 'OPENAI_API_KEY' and 'DEEPSEEK_API_KEY' environment variable are set lo
 will require setting up an OpenAI API key or DeepSeek API key in the environment variables for the code to function correctly.
 The gameplay_matrix is a numpy array representing the Connect 4 board.
                          0 = empty, 1 = Red (player), 2 = Yellow (AI).
+Added lru caching to optimize repeated calls with the same board state. lru decorator caches up to 128 unique board states.
 """
 import os
 from openai import OpenAI
+from functools import lru_cache
 import numpy as np
 # --- Module-level client initialization ---
 # Initialize the client once when the module is imported for efficiency.git
@@ -22,6 +24,8 @@ try:
 except Exception as e:
     print(f"Error initializing OpenAI client: {e}")
     client = None
+
+@lru_cache(maxsize=128)
 def get_ai_move(gameplay_matrix: np.ndarray) -> int:
     """Gets a move from the AI. Returns an integer for the column (0-6) or -1 on error."""
     if client is None:
