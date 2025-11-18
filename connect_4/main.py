@@ -104,10 +104,13 @@ def main():
             
         
         # --- Drawing ---
-        board.draw_board(WIN)
-        draw_matrix_info(WIN, board, font)
-        for button in buttons:
-            button.draw(WIN, button_font)
+        if board.chk:  # Only redraw if the board has changed
+            board.draw_board(WIN)
+            draw_matrix_info(WIN, board, font)
+            board.chk = False  # Reset the flag after drawing
+            for button in buttons:
+                button.draw(WIN, button_font)
+            
 
         if game_over:
             text_surface = winner_font.render(winner_text, True, (0, 0, 0))
