@@ -88,11 +88,7 @@ class: Board {
             					If player_id is 1, use red_scorecard
             					else, use yellow_scorecard
         			}
-        	class method: call check_win_vectorized(scorecard, row, column) {
-        				if it returns True:
-            					return the winning player_id
-        					or return None (no winner)
-			}
+        	
     			class method: draw_board(window) {
         				draw game section rectangle (blue)
         				draw info section rectangle (sky blue)
