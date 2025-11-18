@@ -9,7 +9,7 @@ import os
 from openai import OpenAI
 import numpy as np
 # --- Module-level client initialization ---
-# Initialize the client once when the module is imported for efficiency.
+# Initialize the client once when the module is imported for efficiency.git
 # This also helps in failing early if the API key is not set.
 try:
     # Check for DeepSeek specific key first, then fall back to the general OpenAI key name.
