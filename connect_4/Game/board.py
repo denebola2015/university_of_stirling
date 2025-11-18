@@ -15,7 +15,8 @@ class Board:
         # initialize an empty board 
         self.board = [[None for _ in range(COLS)] for _ in range(ROWS)]
         
-        # Initialize the tracking matrices from your algorithm file
+        # Initialize the tracking matrices from b_algorithm file
+        self.chk = True # Flag to indicate if the board needs redrawing
         self.gameplay, self.red_scorecard, self.yellow_scorecard = create_tracking_matrices() 
 
     def drop_piece(self, col, piece_color):
@@ -36,7 +37,7 @@ class Board:
                     self.gameplay[r][col] = 2
                     self.yellow_scorecard[r][col] = 1
                     # If a yellow piece is played, record 1 at that position in the yellow_scorecard matrix and 2 in the gameplay matrix
-
+                self.chk = True # The board has changed, so it needs to be redrawn
                 return r, col  # Return the position of the new piece
         return None  # Indicates the column is full
 
