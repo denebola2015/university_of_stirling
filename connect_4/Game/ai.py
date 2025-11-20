@@ -25,14 +25,31 @@ except Exception as e:
     print(f"Error initializing OpenAI client: {e}")
     client = None
 
+def get_ai_move(gameplay_matrix: np.ndarray, valid_moves: list) -> int:
+    """
+    Public-facing function to get the AI's move.
+    It converts the NumPy array to a hashable tuple before calling the cached function.
+    Args:
+        gameplay_matrix: The current board state.
+        valid_moves: A list of column indices that are not full.
+    """
+    # Convert the numpy array to a tuple of tuples to make it hashable for the cache.
+    board_tuple = tuple(map(tuple, gameplay_matrix))
+    # Also convert the list of valid moves to a tuple to make it hashable.
+    valid_moves_tuple = tuple(valid_moves)
+    return _get_ai_move_cached(board_tuple, valid_moves_tuple)
+
 @lru_cache(maxsize=128)
-def get_ai_move(gameplay_matrix: np.ndarray) -> int:
-    """Gets a move from the AI. Returns an integer for the column (0-6) or -1 on error."""
+def _get_ai_move_cached(board_tuple: tuple, valid_moves: tuple) -> int:
+    """
+    Internal cached function that gets a move from the AI.
+    Accepts a hashable tuple representation of the board.
+    """
     if client is None:
         return -1 # Return error if client wasn't initialized
     try:
-        # Convert the numpy matrix to a simple string format for the prompt.
-        board_string = "\n".join([" ".join(map(str, row)) for row in gameplay_matrix])
+        # Convert the board tuple to a simple string format for the prompt.
+        board_string = "\n".join([" ".join(map(str, row)) for row in board_tuple])
 
         prompt = f"""
         You are an expert Connect 4 player. It is your turn to play as Yellow (2).
@@ -42,7 +59,8 @@ def get_ai_move(gameplay_matrix: np.ndarray) -> int:
         Board:
         {board_string}
 
-        Which column (0-6) do you choose? Your answer must be only a single number from 0 to 6.
+        The available columns are: {valid_moves}.
+        Which column do you choose? Your answer must be only a single number from the list of available columns.
         """
         response = client.chat.completions.create(
             model="deepseek-chat",
@@ -54,9 +72,23 @@ def get_ai_move(gameplay_matrix: np.ndarray) -> int:
         )
         response_content = response.choices[0].message.content
         
-        # Convert the response to an integer.
-        return int(response_content)
+        # --- Robustness Check ---
+        # 1. Try to convert the AI's response to an integer.
+        # 2. Check if the chosen column is in the list of valid moves.
+        try:
+            chosen_col = int(response_content.strip())
+            if chosen_col in valid_moves:
+                return chosen_col
+        except ValueError:
+            # The AI returned non-numeric text.
+            print(f"AI returned an invalid (non-numeric) response: '{response_content}'")
+
+        # --- Safeguard ---
+        # If the AI's response was invalid or not in the valid_moves list, pick a random valid move.
+        print("AI response was invalid. Picking a random valid move as a fallback.")
+        return np.random.choice(list(valid_moves))
 
     except Exception as e:
         print(f"An error occurred while getting the AI move: {e}")
-        return -1 # Return -1 to indicate an error.
+        # If the API call fails entirely, fall back to a random valid move.
+        return np.random.choice(list(valid_moves))
