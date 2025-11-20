@@ -8,9 +8,6 @@ track sequences of diagonal and anti diagonal pieces.
 import numpy as np
 from .constants import ROWS, COLS
 from typing import Tuple
-# Define constants for gameplay matrix values"
-PLAYER_RED = 1
-PLAYER_YELLOW = 2
 
 
 # create_tracking_matrices function returns three separate NumPy arrays (the tracking matrices) grouped together in a single tuple.
