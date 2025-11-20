@@ -34,3 +34,7 @@ YELLOW = (255, 255, 0)
 BLUE = (65,105,225)
 SKY_BLUE = (128,128,0)
 WHITE = (255, 255, 255)
+
+# Define constants for gameplay matrix values"
+PLAYER_RED = 1
+PLAYER_YELLOW = 2
